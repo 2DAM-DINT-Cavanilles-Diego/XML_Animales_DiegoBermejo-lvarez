@@ -9,8 +9,11 @@ package xmlanimales_diegobermejoálvarez;
  * @author dieberalv
  */
 public class VentanaAnimales extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VentanaAnimales.class.getName());
+
+    //Declarar el contenedor que guardará los animales
+    private java.util.List<String> animales = new java.util.ArrayList<>();
 
     /**
      * Creates new form VentanaAnimales
@@ -40,8 +43,18 @@ public class VentanaAnimales extends javax.swing.JFrame {
         jLabel1.setText("ANIMAL");
 
         btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
         btnGenerar.setText("Generar XML");
+        btnGenerar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarActionPerformed(evt);
+            }
+        });
 
         txtLista.setColumns(20);
         txtLista.setRows(5);
@@ -90,6 +103,54 @@ public class VentanaAnimales extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+
+        String nombre = txtAnimal.getText().trim();
+        if (!nombre.isEmpty()) {
+            if (animales.size() < 5) {
+                animales.add(nombre);
+                txtLista.append(nombre + "");
+                txtAnimal.setText("");
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Ya has introducido cinco animales.");
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Introduce un nombre.");
+        }
+
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarActionPerformed
+
+        if (animales.size() != 5) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Debes introducir exactamente cinco animales.");
+            return;
+        }
+        try {
+            javax.xml.parsers.DocumentBuilderFactory factory
+                    = javax.xml.parsers.DocumentBuilderFactory.newInstance();
+            javax.xml.parsers.DocumentBuilder builder = factory.newDocumentBuilder();
+            org.w3c.dom.Document doc = builder.newDocument();
+            org.w3c.dom.Element raiz = doc.createElement("animales");
+            doc.appendChild(raiz);
+            for (String a : animales) {
+                org.w3c.dom.Element nodoAnimal = doc.createElement("animal");
+                nodoAnimal.setTextContent(a);
+                raiz.appendChild(nodoAnimal);
+            }
+            javax.xml.transform.TransformerFactory tf = javax.xml.transform.TransformerFactory.newInstance();
+            javax.xml.transform.Transformer transformer = tf.newTransformer();
+            javax.xml.transform.dom.DOMSource origen = new javax.xml.transform.dom.DOMSource(doc);
+            java.io.File archivo = new java.io.File("animales.xml");
+            javax.xml.transform.stream.StreamResult destino = new javax.xml.transform.stream.StreamResult(archivo);
+            transformer.transform(origen, destino);
+            javax.swing.JOptionPane.showMessageDialog(this, "XML generado correctamente.");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }//GEN-LAST:event_btnGenerarActionPerformed
 
     /**
      * @param args the command line arguments
