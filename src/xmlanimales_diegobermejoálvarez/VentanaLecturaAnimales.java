@@ -4,6 +4,7 @@
  */
 package xmlanimales_diegobermejoálvarez;
 
+import java.awt.Font;
 import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -93,6 +94,10 @@ public class VentanaLecturaAnimales extends javax.swing.JFrame {
 
         try {
             File archivo = new File("animales.xml");
+            
+            // Definir la fuente
+            Font fuentePersonalizada = new Font("Segoe UI", Font.BOLD, 18);
+            
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document docXML = builder.parse(archivo);
@@ -103,9 +108,16 @@ public class VentanaLecturaAnimales extends javax.swing.JFrame {
             for (int i = 0; i < lista.getLength(); i++) {
                 Element e = (Element) lista.item(i);
                 String nombre = e.getTextContent().trim();
+                
                 // Cargar imagen correspondiente desde /img
                 ImageIcon icon = new ImageIcon(getClass().getResource("/img/" + nombre + ".png"));
                 JLabel lbl = new JLabel(nombre, icon, JLabel.LEFT);
+
+                // Aplicación de la fuente al label
+                lbl.setFont(fuentePersonalizada);
+                
+                //Establece un espacio entre la imagen y el texto
+                lbl.setIconTextGap(200);
                 Panel.add(lbl);
             }
             Panel.revalidate();
