@@ -4,10 +4,6 @@
  */
 package xmlanimales_diegobermejoálvarez;
 
-/**
- *
- * @author dieberalv
- */
 public class VentanaAnimales extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VentanaAnimales.class.getName());
@@ -15,9 +11,7 @@ public class VentanaAnimales extends javax.swing.JFrame {
     //Declarar el contenedor que guardará los animales
     private java.util.List<String> animales = new java.util.ArrayList<>();
 
-    /**
-     * Creates new form VentanaAnimales
-     */
+
     public VentanaAnimales() {
         initComponents();
     }
@@ -110,7 +104,7 @@ public class VentanaAnimales extends javax.swing.JFrame {
         if (!nombre.isEmpty()) {
             if (animales.size() < 5) {
                 animales.add(nombre);
-                txtLista.append(nombre + "");
+                txtLista.append(nombre + "\n");
                 txtAnimal.setText("");
             } else {
                 javax.swing.JOptionPane.showMessageDialog(this, "Ya has introducido cinco animales.");
