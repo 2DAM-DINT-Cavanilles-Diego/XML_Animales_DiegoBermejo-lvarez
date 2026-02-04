@@ -4,12 +4,21 @@
  */
 package xmlanimales_diegobermejoálvarez;
 
+import java.io.File;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
 /**
  *
  * @author dieberalv
  */
 public class VentanaLecturaAnimales extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VentanaLecturaAnimales.class.getName());
 
     /**
@@ -29,7 +38,8 @@ public class VentanaLecturaAnimales extends javax.swing.JFrame {
     private void initComponents() {
 
         btnLeer = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
+        jScrollPanel = new javax.swing.JScrollPane();
+        Panel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -40,29 +50,31 @@ public class VentanaLecturaAnimales extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+        javax.swing.GroupLayout PanelLayout = new javax.swing.GroupLayout(Panel);
+        Panel.setLayout(PanelLayout);
+        PanelLayout.setHorizontalGroup(
+            PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 658, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 440, Short.MAX_VALUE)
+        PanelLayout.setVerticalGroup(
+            PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 438, Short.MAX_VALUE)
         );
+
+        jScrollPanel.setViewportView(Panel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(290, 290, 290)
                 .addComponent(btnLeer)
                 .addContainerGap(304, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPanel)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -70,7 +82,7 @@ public class VentanaLecturaAnimales extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addComponent(btnLeer)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -78,7 +90,30 @@ public class VentanaLecturaAnimales extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLeerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeerActionPerformed
-        // TODO add your handling code here:
+
+        try {
+            File archivo = new File("animales.xml");
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document docXML = builder.parse(archivo);
+            docXML.getDocumentElement().normalize();
+            NodeList lista = docXML.getElementsByTagName("animal");
+            Panel.removeAll();
+            Panel.setLayout(new java.awt.GridLayout(lista.getLength(), 1));
+            for (int i = 0; i < lista.getLength(); i++) {
+                Element e = (Element) lista.item(i);
+                String nombre = e.getTextContent().trim();
+                // Cargar imagen correspondiente desde /img
+                ImageIcon icon = new ImageIcon(getClass().getResource("/img/" + nombre + ".png"));
+                JLabel lbl = new JLabel(nombre, icon, JLabel.LEFT);
+                Panel.add(lbl);
+            }
+            Panel.revalidate();
+            Panel.repaint();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
     }//GEN-LAST:event_btnLeerActionPerformed
 
     /**
@@ -107,7 +142,8 @@ public class VentanaLecturaAnimales extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Panel;
     private javax.swing.JButton btnLeer;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPanel;
     // End of variables declaration//GEN-END:variables
 }

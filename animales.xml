@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <animales>
-    <animal>Perro</animal>
-    <animal>Loro</animal>
+    <animal>Lobo</animal>
     <animal>Gato</animal>
-    <animal>Pato</animal>
-    <animal>Vaca</animal>
+    <animal>Perro</animal>
+    <animal>Tortuga</animal>
+    <animal>Caballo</animal>
 </animales>
